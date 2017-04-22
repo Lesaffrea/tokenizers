@@ -26,9 +26,9 @@ remove_stopwords <- function(x, stopwords) {
 
 add_class <- function(x) {
   if (is.data.frame(x)) {
-    class(x) <- c("token", "data.frame")
+    class(x) <- c("tokens", "data.frame")
   } else if (is.list(x) && !is.data.frame(x)) {
-    class(x) <- c("token_list", "list")
+    class(x) <- c("tokens_list", "list")
   }
   x
 }

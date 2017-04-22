@@ -14,6 +14,6 @@ test_that("Stopwords are removed", {
 })
 
 test_that("Token classes are added", {
-  expect_is(add_class(list()), "token_list")
-  expect_is(add_class(data.frame()), "token")
+  expect_is(add_class(list()), "tokens_list")
+  expect_is(add_class(data.frame()), "tokens")
 })

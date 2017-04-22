@@ -124,5 +124,7 @@ tokenize_ptb <- function(x, lowercase = FALSE, simplify = FALSE) {
   if (!is.null(named)) {
     names(out) <- named
   }
-  simplify_list(out, simplify)
+  out <- simplify_list(out, simplify)
+  out <- add_class(out)
+  out
 }

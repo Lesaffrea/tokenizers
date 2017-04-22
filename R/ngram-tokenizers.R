@@ -72,7 +72,9 @@ tokenize_ngrams <- function(x, lowercase = TRUE, n = 3L, n_min = n,
   out <- generate_ngrams_batch(words, ngram_min = n_min, ngram_max = n,
                                stopwords = stopwords, ngram_delim = ngram_delim)
   if (!is.null(named)) names(out) <- named
-  simplify_list(out, simplify)
+  out <- simplify_list(out, simplify)
+  out <- add_class(out)
+  out
 }
 
 # Check the skip distance between words, and return FALSE if the skip is bigger
@@ -112,5 +114,7 @@ tokenize_skip_ngrams <- function(x, lowercase = TRUE, n_min = 1, n = 3, k = 1,
                          recursive = FALSE, use.names = FALSE))
   out <- skip_ngrams_vectorised(words, skips, stopwords)
   if (!is.null(named)) names(out) <- named
-  simplify_list(out, simplify)
+  out <- simplify_list(out, simplify)
+  out <- add_class(out)
+  out
 }

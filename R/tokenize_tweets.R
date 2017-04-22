@@ -69,5 +69,8 @@ tokenize_tweets <- function(x, lowercase = TRUE, stopwords = NULL,
   # remove any blanks (from removing URLs)
   out <- lapply(out, function(toks) toks[toks != ""])
 
-  simplify_list(out, simplify)
+  out <- simplify_list(out, simplify)
+  out <- add_class(out)
+  out
+
 }

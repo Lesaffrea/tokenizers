@@ -59,16 +59,23 @@ test_that("names are preserved with tweet tokenizer", {
 test_that("punctuation as part of tweets can preserved", {
   txt <- c(t1 = "We love #rstats!",
            t2 = "@rOpenSci: See you at UseR!")
+  expected1 <- add_class(
+    list(t1 = c("We", "love", "#rstats", "!"),
+         t2 = c("@rOpenSci", ":", "See", "you", "at", "UseR", "!"))
+    )
+  expected2 <- add_class(
+    list(t1 = c("We", "love", "#rstats"),
+         t2 = c("@rOpenSci", "See", "you", "at", "UseR"))
+    )
 
   expect_equal(
     tokenize_tweets(txt, strip_punct = FALSE, lowercase = FALSE),
-    list(t1 = c("We", "love", "#rstats", "!"),
-         t2 = c("@rOpenSci", ":", "See", "you", "at", "UseR", "!"))
+    expected1
   )
 
   expect_equal(
     tokenize_tweets(txt, strip_punct = TRUE, lowercase = FALSE),
-    list(t1 = c("We", "love", "#rstats"),
-         t2 = c("@rOpenSci", "See", "you", "at", "UseR"))
+    expected2
   )
+
 })

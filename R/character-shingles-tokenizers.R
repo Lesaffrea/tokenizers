@@ -49,5 +49,7 @@ tokenize_character_shingles <- function(x, n = 3L, n_min = n,
   out <- generate_ngrams_batch(chars, ngram_min = n_min, ngram_max = n,
                                stopwords = "", ngram_delim = "")
   if (!is.null(named)) names(out) <- named
-  simplify_list(out, simplify)
+  out <- simplify_list(out, simplify)
+  out <- add_class(out)
+  out
 }

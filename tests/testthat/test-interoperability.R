@@ -1,0 +1,16 @@
+context("Interoperability")
+
+test_that("All tokenizers that return lists have proper classes", {
+  x <- c("This is the demo sentence.", "This is a second document.")
+  expect_is(tokenize_characters(x), c("tokens_list"))
+  expect_is(tokenize_character_shingles(x), c("tokens_list"))
+  expect_is(tokenize_lines(x), c("tokens_list"))
+  expect_is(tokenize_ngrams(x), c("tokens_list"))
+  expect_is(tokenize_ptb(x), c("tokens_list"))
+  expect_is(tokenize_regex(x), c("tokens_list"))
+  expect_is(tokenize_sentences(x), c("tokens_list"))
+  expect_is(tokenize_skip_ngrams(x), c("tokens_list"))
+  expect_is(tokenize_tweets(x), c("tokens_list"))
+  expect_is(tokenize_words(x), c("tokens_list"))
+  expect_is(tokenize_word_stems(x), c("tokens_list"))
+})
