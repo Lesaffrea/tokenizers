@@ -5,7 +5,7 @@
 \title{Character shingle tokenizers}
 \usage{
 tokenize_character_shingles(x, n = 3L, n_min = n, lowercase = TRUE,
-  strip_non_alphanum = TRUE, simplify = FALSE)
+  strip_non_alphanum = TRUE, return = c("list", "df"), simplify = FALSE)
 }
 \arguments{
 \item{x}{A character vector or a list of character vectors to be tokenized
@@ -24,16 +24,20 @@ than or equal to \code{n}.}
 
 \item{strip_non_alphanum}{Should punctuation and white space be stripped?}
 
+\item{return}{Return a list or a data frame?}
+
 \item{simplify}{\code{FALSE} by default so that a consistent value is
 returned regardless of length of input. If \code{TRUE}, then an input with
 a single element will return a character vector of tokens instead of a
 list.}
 }
 \value{
-A list of character vectors containing the tokens, with one element
-  in the list for each element that was passed as input. If \code{simplify =
-  TRUE} and only a single element was passed as input, then the output is a
-  character vector of tokens.
+If a list is returned, it will be a list of character vectors
+  containing the tokens, with one element in the list for each element that
+  was passed as input. If \code{simplify = TRUE} and only a single element
+  was passed as input, then the output is a character vector of tokens. If a
+  data frame is returned, it will have columns for \code{doc_id},
+  \code{token_index}, and \code{token}.
 }
 \description{
 The character shingle tokenizer functions like an n-gram tokenizer, except

@@ -11,8 +11,10 @@
 tokenize_tweets <- function(x, lowercase = TRUE, stopwords = NULL,
                             strip_punct = TRUE,
                             strip_url = FALSE,
+                            return = c("list", "df"),
                             simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
 
   # split on white space
@@ -69,8 +71,6 @@ tokenize_tweets <- function(x, lowercase = TRUE, stopwords = NULL,
   # remove any blanks (from removing URLs)
   out <- lapply(out, function(toks) toks[toks != ""])
 
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
-
+  return_type(out, return, simplify)
 }

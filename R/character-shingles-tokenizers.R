@@ -16,16 +16,17 @@
 #'   than or equal to \code{n}.
 #' @param lowercase Should the characters be made lower case?
 #' @param strip_non_alphanum Should punctuation and white space be stripped?
+#' @param return Return a list or a data frame?
 #' @param simplify \code{FALSE} by default so that a consistent value is
 #'   returned regardless of length of input. If \code{TRUE}, then an input with
 #'   a single element will return a character vector of tokens instead of a
 #'   list.
-#'
-#' @return A list of character vectors containing the tokens, with one element
-#'   in the list for each element that was passed as input. If \code{simplify =
-#'   TRUE} and only a single element was passed as input, then the output is a
-#'   character vector of tokens.
-#'
+#' @return If a list is returned, it will be a list of character vectors
+#'   containing the tokens, with one element in the list for each element that
+#'   was passed as input. If \code{simplify = TRUE} and only a single element
+#'   was passed as input, then the output is a character vector of tokens. If a
+#'   data frame is returned, it will have columns for \code{doc_id},
+#'   \code{token_index}, and \code{token}.
 #' @examples
 #' x <- c("Now is the hour of our discontent")
 #' tokenize_character_shingles(x)
@@ -38,8 +39,10 @@
 tokenize_character_shingles <- function(x, n = 3L, n_min = n,
                                         lowercase = TRUE,
                                         strip_non_alphanum = TRUE,
+                                        return = c("list", "df"),
                                         simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
   if (n < n_min || n_min <= 0)
     stop("n and n_min must be integers, and n_min must be less than ",
@@ -49,7 +52,6 @@ tokenize_character_shingles <- function(x, n = 3L, n_min = n,
   out <- generate_ngrams_batch(chars, ngram_min = n_min, ngram_max = n,
                                stopwords = "", ngram_delim = "")
   if (!is.null(named)) names(out) <- named
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
+  return_type(out, return, simplify)
 }

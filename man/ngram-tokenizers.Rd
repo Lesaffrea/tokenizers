@@ -7,10 +7,11 @@
 \title{N-gram tokenizers}
 \usage{
 tokenize_ngrams(x, lowercase = TRUE, n = 3L, n_min = n,
-  stopwords = character(), ngram_delim = " ", simplify = FALSE)
+  stopwords = character(), ngram_delim = " ", return = c("list", "df"),
+  simplify = FALSE)
 
 tokenize_skip_ngrams(x, lowercase = TRUE, n_min = 1, n = 3, k = 1,
-  stopwords = character(), simplify = FALSE)
+  stopwords = character(), return = c("list", "df"), simplify = FALSE)
 }
 \arguments{
 \item{x}{A character vector or a list of character vectors to be tokenized
@@ -31,6 +32,8 @@ n-grams.}
 
 \item{ngram_delim}{The separator between words in an n-gram.}
 
+\item{return}{Return a list or a data frame?}
+
 \item{simplify}{\code{FALSE} by default so that a consistent value is
 returned regardless of length of input. If \code{TRUE}, then an input with
 a single element will return a character vector of tokens instead of a
@@ -41,10 +44,12 @@ words. The function will compute all skip n-grams between \code{0} and
 \code{k}.}
 }
 \value{
-A list of character vectors containing the tokens, with one element
-  in the list for each element that was passed as input. If \code{simplify =
-  TRUE} and only a single element was passed as input, then the output is a
-  character vector of tokens.
+If a list is returned, it will be a list of character vectors
+  containing the tokens, with one element in the list for each element that
+  was passed as input. If \code{simplify = TRUE} and only a single element
+  was passed as input, then the output is a character vector of tokens. If a
+  data frame is returned, it will have columns for \code{doc_id},
+  \code{token_index}, and \code{token}.
 }
 \description{
 These functions tokenize their inputs into different kinds of n-grams. The

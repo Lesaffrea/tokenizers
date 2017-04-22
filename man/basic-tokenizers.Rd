@@ -12,22 +12,24 @@
 \title{Basic tokenizers}
 \usage{
 tokenize_characters(x, lowercase = TRUE, strip_non_alphanum = TRUE,
-  simplify = FALSE)
+  return = c("list", "df"), simplify = FALSE)
 
 tokenize_words(x, lowercase = TRUE, stopwords = NULL, strip_punct = TRUE,
-  strip_numeric = FALSE, simplify = FALSE)
+  strip_numeric = FALSE, return = c("list", "df"), simplify = FALSE)
 
 tokenize_sentences(x, lowercase = FALSE, strip_punct = FALSE,
+  return = c("list", "df"), simplify = FALSE)
+
+tokenize_lines(x, return = c("list", "df"), simplify = FALSE)
+
+tokenize_paragraphs(x, paragraph_break = "\\n\\n", return = c("list", "df"),
   simplify = FALSE)
 
-tokenize_lines(x, simplify = FALSE)
-
-tokenize_paragraphs(x, paragraph_break = "\\n\\n", simplify = FALSE)
-
-tokenize_regex(x, pattern = "\\\\s+", simplify = FALSE)
+tokenize_regex(x, pattern = "\\\\s+", return = c("list", "df"),
+  simplify = FALSE)
 
 tokenize_tweets(x, lowercase = TRUE, stopwords = NULL, strip_punct = TRUE,
-  strip_url = FALSE, simplify = FALSE)
+  strip_url = FALSE, return = c("list", "df"), simplify = FALSE)
 }
 \arguments{
 \item{x}{A character vector or a list of character vectors to be tokenized
@@ -41,6 +43,8 @@ varies by tokenizer; it is only \code{TRUE} by default for the tokenizers
 that you are likely to use last.}
 
 \item{strip_non_alphanum}{Should punctuation and white space be stripped?}
+
+\item{return}{Return a list or a data frame?}
 
 \item{simplify}{\code{FALSE} by default so that a consistent value is
 returned regardless of length of input. If \code{TRUE}, then an input with
@@ -62,10 +66,12 @@ paragraphs.}
 removed entirely?}
 }
 \value{
-A list of character vectors containing the tokens, with one element
-  in the list for each element that was passed as input. If \code{simplify =
-  TRUE} and only a single element was passed as input, then the output is a
-  character vector of tokens.
+If a list is returned, it will be a list of character vectors
+  containing the tokens, with one element in the list for each element that
+  was passed as input. If \code{simplify = TRUE} and only a single element
+  was passed as input, then the output is a character vector of tokens. If a
+  data frame is returned, it will have columns for \code{doc_id},
+  \code{token_index}, and \code{token}.
 }
 \description{
 These functions perform basic tokenization into words, sentences, paragraphs,

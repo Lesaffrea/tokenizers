@@ -21,14 +21,17 @@
 #'   paragraphs.
 #' @param stopwords A character vector of stop words to be excluded.
 #' @param pattern A regular expression that defines the split.
+#' @param return Return a list or a data frame?
 #' @param simplify \code{FALSE} by default so that a consistent value is
 #'   returned regardless of length of input. If \code{TRUE}, then an input with
 #'   a single element will return a character vector of tokens instead of a
 #'   list.
-#' @return A list of character vectors containing the tokens, with one element
-#'   in the list for each element that was passed as input. If \code{simplify =
-#'   TRUE} and only a single element was passed as input, then the output is a
-#'   character vector of tokens.
+#' @return If a list is returned, it will be a list of character vectors
+#'   containing the tokens, with one element in the list for each element that
+#'   was passed as input. If \code{simplify = TRUE} and only a single element
+#'   was passed as input, then the output is a character vector of tokens. If a
+#'   data frame is returned, it will have columns for \code{doc_id},
+#'   \code{token_index}, and \code{token}.
 #' @importFrom stringi stri_split_boundaries stri_trans_tolower stri_trim_both
 #'   stri_replace_all_charclass stri_split_fixed stri_split_lines
 #'   stri_split_regex stri_subset_charclass
@@ -54,8 +57,9 @@ NULL
 #' @export
 #' @rdname basic-tokenizers
 tokenize_characters <- function(x, lowercase = TRUE, strip_non_alphanum = TRUE,
-                           simplify = FALSE) {
+                           return = c("list", "df"), simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
   if (lowercase)
     x <- stri_trans_tolower(x)
@@ -63,17 +67,17 @@ tokenize_characters <- function(x, lowercase = TRUE, strip_non_alphanum = TRUE,
     x <- stri_replace_all_charclass(x, "[[:punct:][:whitespace:]]", "")
   out <- stri_split_boundaries(x, type = "character")
   if (!is.null(named)) names(out) <- named
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
+  return_type(out, return, simplify)
 }
 
 #' @export
 #' @rdname basic-tokenizers
 tokenize_words <- function(x, lowercase = TRUE, stopwords = NULL,
                            strip_punct = TRUE, strip_numeric = FALSE,
-                           simplify = FALSE) {
+                           return = c("list", "df"), simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
   if (lowercase) x <- stri_trans_tolower(x)
   out <- stri_split_boundaries(x, type = "word",
@@ -84,16 +88,16 @@ tokenize_words <- function(x, lowercase = TRUE, stopwords = NULL,
   }
   if (!is.null(named)) names(out) <- named
   if (!is.null(stopwords)) out <- lapply(out, remove_stopwords, stopwords)
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
+  return_type(out, return, simplify)
 }
 
 #' @export
 #' @rdname basic-tokenizers
 tokenize_sentences <- function(x, lowercase = FALSE, strip_punct = FALSE,
-                               simplify = FALSE) {
+                               return = c("list", "df"), simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
   x <- stri_replace_all_charclass(x, "[[:whitespace:]]", " ")
   out <- stri_split_boundaries(x, type = "sentence", skip_word_none = FALSE)
@@ -102,45 +106,45 @@ tokenize_sentences <- function(x, lowercase = FALSE, strip_punct = FALSE,
   if (strip_punct)
     out <- lapply(out, stri_replace_all_charclass, "[[:punct:]]", "")
   if (!is.null(named)) names(out) <- named
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
-
+  return_type(out, return, simplify)
 }
 
 #' @export
 #' @rdname basic-tokenizers
-tokenize_lines <- function(x, simplify = FALSE) {
+tokenize_lines <- function(x, return = c("list", "df"), simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
   out <- stri_split_lines(x, omit_empty = TRUE)
   if (!is.null(named)) names(out) <- named
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
+  return_type(out, return, simplify)
 }
 
 #' @export
 #' @rdname basic-tokenizers
-tokenize_paragraphs <- function(x, paragraph_break = "\n\n", simplify = FALSE) {
+tokenize_paragraphs <- function(x, paragraph_break = "\n\n",
+                                return = c("list", "df"), simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
   out <- stri_split_fixed(x, pattern = paragraph_break, omit_empty = TRUE)
   out <- lapply(out, stri_replace_all_charclass, "[[:whitespace:]]", " ")
   if (!is.null(named)) names(out) <- named
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
+  return_type(out, return, simplify)
 }
 
 #' @export
 #' @rdname basic-tokenizers
-tokenize_regex <- function(x, pattern = "\\s+", simplify = FALSE) {
+tokenize_regex <- function(x, pattern = "\\s+",
+                           return = c("list", "df"), simplify = FALSE) {
   check_input(x)
+  return <- match.arg(return)
   named <- names(x)
   out <- stri_split_regex(x, pattern = pattern, omit_empty = TRUE)
   if (!is.null(named)) names(out) <- named
-  out <- simplify_list(out, simplify)
   out <- add_class(out)
-  out
+  return_type(out, return, simplify)
 }
