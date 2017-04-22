@@ -32,6 +32,5 @@ test_that("Word tokenizer produces correct output", {
            "Please", "buy", "me\\ntwo", "of", "them.\\nThanks", "."),
          c("They", "'ll", "save", "and", "invest", "more", "."),
          c("hi", ",", "my", "name", "ca", "n't", "hello", ","))
-  expected <- add_class(expected)
   expect_identical(tokenize_ptb(sents), expected)
 })

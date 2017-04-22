@@ -62,7 +62,7 @@ test_that("Word tokenizer removes stop words", {
   test_l <- list(test, test)
   stopwords <- c("is", "the", "for")
   expected <- c("now", "time", "every", "good", "person")
-  expected_l <- add_class(list(expected, expected))
+  expected_l <- list(expected, expected)
   expect_equal(tokenize_words(test, simplify = TRUE, stopwords = stopwords),
                expected)
   expect_equal(tokenize_words(test_l, stopwords = stopwords), expected_l)

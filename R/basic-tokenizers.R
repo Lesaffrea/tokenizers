@@ -67,7 +67,6 @@ tokenize_characters <- function(x, lowercase = TRUE, strip_non_alphanum = TRUE,
     x <- stri_replace_all_charclass(x, "[[:punct:][:whitespace:]]", "")
   out <- stri_split_boundaries(x, type = "character")
   if (!is.null(named)) names(out) <- named
-  out <- add_class(out)
   return_type(out, return, simplify)
 }
 
@@ -88,7 +87,6 @@ tokenize_words <- function(x, lowercase = TRUE, stopwords = NULL,
   }
   if (!is.null(named)) names(out) <- named
   if (!is.null(stopwords)) out <- lapply(out, remove_stopwords, stopwords)
-  out <- add_class(out)
   return_type(out, return, simplify)
 }
 
@@ -106,7 +104,6 @@ tokenize_sentences <- function(x, lowercase = FALSE, strip_punct = FALSE,
   if (strip_punct)
     out <- lapply(out, stri_replace_all_charclass, "[[:punct:]]", "")
   if (!is.null(named)) names(out) <- named
-  out <- add_class(out)
   return_type(out, return, simplify)
 }
 
@@ -118,7 +115,6 @@ tokenize_lines <- function(x, return = c("list", "df"), simplify = FALSE) {
   named <- names(x)
   out <- stri_split_lines(x, omit_empty = TRUE)
   if (!is.null(named)) names(out) <- named
-  out <- add_class(out)
   return_type(out, return, simplify)
 }
 
@@ -132,7 +128,6 @@ tokenize_paragraphs <- function(x, paragraph_break = "\n\n",
   out <- stri_split_fixed(x, pattern = paragraph_break, omit_empty = TRUE)
   out <- lapply(out, stri_replace_all_charclass, "[[:whitespace:]]", " ")
   if (!is.null(named)) names(out) <- named
-  out <- add_class(out)
   return_type(out, return, simplify)
 }
 
@@ -145,6 +140,5 @@ tokenize_regex <- function(x, pattern = "\\s+",
   named <- names(x)
   out <- stri_split_regex(x, pattern = pattern, omit_empty = TRUE)
   if (!is.null(named)) names(out) <- named
-  out <- add_class(out)
   return_type(out, return, simplify)
 }

@@ -54,6 +54,5 @@ tokenize_word_stems <- function(x, language = "english", stopwords = NULL,
   words <- tokenize_words(x, lowercase = TRUE, stopwords = stopwords)
   out <- lapply(words, wordStem, language = language)
   if (!is.null(named)) names(out) <- named
-  out <- add_class(out)
   return_type(out, return, simplify)
 }

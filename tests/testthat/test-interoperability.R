@@ -1,25 +1,9 @@
 context("Interoperability")
 
-test_that("All tokenizers that return lists have proper classes", {
-  x <- c("This is the demo sentence.", "This is a second document.")
-  expect_is(tokenize_characters(x), c("tokens_list"))
-  expect_is(tokenize_character_shingles(x), c("tokens_list"))
-  expect_is(tokenize_lines(x), c("tokens_list"))
-  expect_is(tokenize_ngrams(x), c("tokens_list"))
-  expect_is(tokenize_ptb(x), c("tokens_list"))
-  expect_is(tokenize_regex(x), c("tokens_list"))
-  expect_is(tokenize_sentences(x), c("tokens_list"))
-  expect_is(tokenize_skip_ngrams(x), c("tokens_list"))
-  expect_is(tokenize_tweets(x), c("tokens_list"))
-  expect_is(tokenize_words(x), c("tokens_list"))
-  expect_is(tokenize_word_stems(x), c("tokens_list"))
-})
-
 test_that("Lists of tokens can be converted to data.frame", {
   x <- c(a = "This is the demo sentence.", b = "This is a second document.")
   tokens_l <- tokenize_words(x)
-  tokens_df <- as.data.frame(tokens_l)
-  expect_is(tokens_df, "tokens")
+  tokens_df <- tokens_list_to_df(tokens_l)
   expect_named(tokens_df, c("doc_id", "token_index", "token"))
-  expect_identical(as.list(tokens_df), tokens_l)
+  expect_identical(tokens_df_to_list(tokens_df), tokens_l)
 })

@@ -12,8 +12,3 @@ test_that("Stopwords are removed", {
   expect_equal(remove_stopwords(letters[1:5], stopwords = c("d", "e")),
                letters[1:3])
 })
-
-test_that("Token classes are added", {
-  expect_is(add_class(list()), "tokens_list")
-  expect_is(add_class(data.frame()), "tokens")
-})

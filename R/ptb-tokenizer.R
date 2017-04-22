@@ -129,6 +129,5 @@ tokenize_ptb <- function(x, lowercase = FALSE, return = c("list", "df"),
   if (!is.null(named)) {
     names(out) <- named
   }
-  out <- add_class(out)
   return_type(out, return, simplify)
 }
