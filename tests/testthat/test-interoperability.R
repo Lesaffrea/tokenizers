@@ -14,3 +14,12 @@ test_that("All tokenizers that return lists have proper classes", {
   expect_is(tokenize_words(x), c("tokens_list"))
   expect_is(tokenize_word_stems(x), c("tokens_list"))
 })
+
+test_that("Lists of tokens can be converted to data.frame", {
+  x <- c(a = "This is the demo sentence.", b = "This is a second document.")
+  tokens_l <- tokenize_words(x)
+  tokens_df <- as.data.frame(tokens_l)
+  expect_is(tokens_df, "tokens")
+  expect_named(tokens_df, c("docid", "token_index", "token"))
+  expect_identical(as.list(tokens_df), tokens_l)
+})

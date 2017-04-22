@@ -32,3 +32,41 @@ add_class <- function(x) {
   }
   x
 }
+
+#' @title Interoperability with other text analysis packages
+#'
+#' @description These functions are provided for interoperability with other R
+#'   text analysis packages. They convert a named list of tokens to a data.frame
+#'   that meets the specifications for interopertability, or vice versa.
+#'
+#' @examples
+#' tokens_l <- tokenize_words(c(a = "A short text.", b = "Even shorter."))
+#' as.data.frame(tokens_l)
+#' as.list(as.data.frame(tokens_l))
+#' @rdname interoperability
+#' @aliases interopertability
+#' @method as.data.frame tokens_list
+#' @export
+as.data.frame.tokens_list <- function(x) {
+  out <- lapply(seq_along(x), function(i) {
+    if (is.null(names(x))) id <- as.character(i) else id <- names(x)[i]
+    data.frame(docid = id,
+               token_index = 1L:length(x[[i]]),
+               token = x[[i]],
+               stringsAsFactors = FALSE)
+  })
+  out <- do.call("rbind", out)
+  add_class(out)
+}
+
+#' @method as.list tokens
+#' @rdname interoperability
+#' @export
+as.list.tokens <- function(x) {
+  stopifnot(is.data.frame(x))
+  docid <- as.factor(x$docid)
+  x$docid <- NULL
+  out <- split(x, f = docid)
+  out <- lapply(out, function(i) i$token)
+  add_class(out)
+}
