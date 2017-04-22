@@ -18,8 +18,17 @@ check_input <- function(x) {
 
 remove_stopwords <- function(x, stopwords) {
   out <- x[!x %in% stopwords]
-  if(!length(out)){
+  if (!length(out)) {
     return(NA_character_)
   }
   return(out)
+}
+
+add_class <- function(x) {
+  if (is.data.frame(x)) {
+    class(x) <- c("token", "data.frame")
+  } else if (is.list(x) && !is.data.frame(x)) {
+    class(x) <- c("token_list", "list")
+  }
+  x
 }
