@@ -50,7 +50,7 @@ add_class <- function(x) {
 as.data.frame.tokens_list <- function(x) {
   out <- lapply(seq_along(x), function(i) {
     if (is.null(names(x))) id <- as.character(i) else id <- names(x)[i]
-    data.frame(docid = id,
+    data.frame(doc_id = id,
                token_index = 1L:length(x[[i]]),
                token = x[[i]],
                stringsAsFactors = FALSE)
@@ -64,9 +64,21 @@ as.data.frame.tokens_list <- function(x) {
 #' @export
 as.list.tokens <- function(x) {
   stopifnot(is.data.frame(x))
-  docid <- as.factor(x$docid)
-  x$docid <- NULL
-  out <- split(x, f = docid)
+  docid <- as.factor(x$doc_id)
+  x$doc_id <- NULL
+  out <- split(x, f = doc_id)
   out <- lapply(out, function(i) i$token)
   add_class(out)
+}
+
+return_type <- function(l, return, simplify) {
+  if (return == "df" && simplify) {
+    stop("You cannot set `simplify = TRUE` and `return = 'df'`")
+  } else if (return == "df" && !simplify) {
+    as.data.frame(l)
+  } else if (return == "list" && simplify) {
+    simplify_list(l, simplify)
+  } else if (return == "list" && !simplify) {
+    l
+  }
 }

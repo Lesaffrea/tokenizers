@@ -20,6 +20,6 @@ test_that("Lists of tokens can be converted to data.frame", {
   tokens_l <- tokenize_words(x)
   tokens_df <- as.data.frame(tokens_l)
   expect_is(tokens_df, "tokens")
-  expect_named(tokens_df, c("docid", "token_index", "token"))
+  expect_named(tokens_df, c("doc_id", "token_index", "token"))
   expect_identical(as.list(tokens_df), tokens_l)
 })
